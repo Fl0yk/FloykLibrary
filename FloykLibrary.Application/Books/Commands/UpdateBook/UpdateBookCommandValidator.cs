@@ -1,21 +1,16 @@
-﻿using FloykLibrary.Domain.Abstractions;
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace FloykLibrary.Application.Books.Commands.UpdateBook
 {
     public class UpdateBookCommandValidator : AbstractValidator<UpdateBookCommand>
     {
-        private readonly IBookRepository _bookRepository;
-
-        public UpdateBookCommandValidator(IBookRepository bookRepository)
+        public UpdateBookCommandValidator()
         {
-            _bookRepository = bookRepository;
+            RuleFor(b => b.Id).NotEmpty();
 
             RuleFor(b => b.ISBN).NotEmpty()
                 .Must(CheckLength)
-                    .WithMessage("'{PropertyName}' must be equal 10 or 13")
-                .MustAsync(CheckIsbnAsync)
-                    .WithMessage("'{PropertyName}' must be unique");
+                    .WithMessage("'{PropertyName}' must be equal 10 or 13");
 
             RuleFor(b => b.Title).NotEmpty();
 
@@ -32,11 +27,6 @@ namespace FloykLibrary.Application.Books.Commands.UpdateBook
                 return true;
 
             return false;
-        }
-
-        private Task<bool> CheckIsbnAsync(UpdateBookCommand command, string isbn, CancellationToken token)
-        {
-            return _bookRepository.IsIsbnUniqueAsync(isbn, token);
         }
     }
 }

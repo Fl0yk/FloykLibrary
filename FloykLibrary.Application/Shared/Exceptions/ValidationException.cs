@@ -4,20 +4,20 @@ namespace FloykLibrary.Application.Shared.Exceptions
 {
     public class ValidationException : Exception
     {
+        public IDictionary<string, string[]> ValidationErrors { get; }
+
         public ValidationException()
-            : base("One or more validation failures have occurred.")
+                : base("One or more validation failures have occurred.")
         {
-            Errors = new Dictionary<string, string[]>();
+            ValidationErrors = new Dictionary<string, string[]>();
         }
 
         public ValidationException(IEnumerable<ValidationFailure> failures)
             : this()
         {
-            Errors = failures
-                .GroupBy(e => e.PropertyName, e => e.ErrorMessage)
+            ValidationErrors = failures
+                .GroupBy(validationFailure => validationFailure.PropertyName, validationFailure => validationFailure.ErrorMessage)
                 .ToDictionary(failureGroup => failureGroup.Key, failureGroup => failureGroup.ToArray());
         }
-
-        public IDictionary<string, string[]> Errors { get; }
     }
 }

@@ -4,6 +4,8 @@ namespace FloykLibrary.Application.Books.Commands.UpdateBook
 {
     public record class UpdateBookCommand : IRequest<Guid>
     {
+        public required Guid Id { get; init; }
+
         public required string ISBN { get; init; }
 
         public required string Title { get; init; }

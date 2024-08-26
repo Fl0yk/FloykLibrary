@@ -1,5 +1,7 @@
-﻿using FloykLibrary.Application.Books.Commands.CreateBook;
+﻿using FloykLibrary.Application.Books.Commands.AddImage;
+using FloykLibrary.Application.Books.Commands.CreateBook;
 using FloykLibrary.Application.Books.Commands.DeleteBook;
+using FloykLibrary.Application.Books.Commands.TakeBook;
 using FloykLibrary.Application.Books.Commands.UpdateBook;
 using FloykLibrary.Application.Books.Queries.GetBookById;
 using FloykLibrary.Application.Books.Queries.GetBookByISBN;
@@ -47,13 +49,33 @@ namespace FloykLibrary.Presentation.Controllers
             return Ok(book);
         }
 
-
         [HttpPost]
         public async Task<IActionResult> CreateBookAsync([FromBody] CreateBookCommand createBookCommand, CancellationToken token)
         {
             var id = await _mediator.Send(createBookCommand, token);
 
             return Ok(id);
+        }
+
+        [HttpPost("image/{id}")]
+        public async Task<IActionResult> AddImageAsync([FromRoute] Guid id, IFormFile formFile, CancellationToken token)
+        {
+            await _mediator.Send(new AddImageCommand() 
+            { 
+                Id = id, 
+                FileName = formFile.FileName, 
+                ImageStream = formFile.OpenReadStream() 
+            }, token);
+
+            return NoContent();
+        }
+
+        [HttpPost("take")]
+        public async Task<IActionResult> TakeBookAsync([FromBody] TakeBookCommand takeBookCommand, CancellationToken token)
+        {
+            await _mediator.Send(takeBookCommand, token);
+
+            return NoContent();
         }
 
         [HttpPut]
@@ -64,10 +86,10 @@ namespace FloykLibrary.Presentation.Controllers
             return NoContent();
         }
 
-        [HttpDelete]
-        public async Task<IActionResult> DeleteBookAsync([FromBody] DeleteBookCommand deleteBookCommand, CancellationToken token)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteBookAsync([FromRoute] Guid id, CancellationToken token)
         {
-            await _mediator.Send(deleteBookCommand, token);
+            await _mediator.Send(new DeleteBookCommand() { Id = id }, token);
 
             return NoContent();
         }

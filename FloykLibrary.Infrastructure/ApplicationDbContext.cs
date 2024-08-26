@@ -19,8 +19,10 @@ namespace FloykLibrary.Infrastructure
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfiguration(new AuthorEntityTypeConfigurator());
             modelBuilder.ApplyConfiguration(new BookEntityTypeConfigurator());
-            modelBuilder.ApplyConfiguration(new  AuthorEntityTypeConfigurator());
+
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

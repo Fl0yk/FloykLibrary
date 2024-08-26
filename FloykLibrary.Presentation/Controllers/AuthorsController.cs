@@ -54,10 +54,10 @@ namespace FloykLibrary.Presentation.Controllers
             return NoContent();
         }
 
-        [HttpDelete]
-        public async Task<IActionResult> DeleteAuthorAsync([FromBody] DeleteAuthorCommand deleteAuthorCommand, CancellationToken token)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAuthorAsync([FromRoute] Guid id, CancellationToken token)
         {
-            await _mediator.Send(deleteAuthorCommand, token);
+            await _mediator.Send(new DeleteAuthorCommand() { Id = id }, token);
 
             return NoContent();
         }

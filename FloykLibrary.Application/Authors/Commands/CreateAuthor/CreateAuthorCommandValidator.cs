@@ -12,9 +12,9 @@ namespace FloykLibrary.Application.Authors.Commands.CreateAuthor
 
             RuleFor(a => a.Country).NotEmpty();
 
-            RuleFor(a => a.DateOfBirth)
+            RuleFor(a => a.DateOfBirth.Date)
                 .NotEmpty()
-                .LessThan(DateTime.Now);
+                .LessThan(DateTime.UtcNow.Date);
         }
     }
 }
