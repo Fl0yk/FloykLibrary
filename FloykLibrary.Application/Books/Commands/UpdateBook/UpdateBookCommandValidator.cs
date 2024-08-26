@@ -1,13 +1,13 @@
 ﻿using FloykLibrary.Domain.Abstractions;
 using FluentValidation;
 
-namespace FloykLibrary.Application.Books.Commands.CreateBook
+namespace FloykLibrary.Application.Books.Commands.UpdateBook
 {
-    public class CreateBookCommandValidator : AbstractValidator<CreateBookCommand>
+    public class UpdateBookCommandValidator : AbstractValidator<UpdateBookCommand>
     {
         private readonly IBookRepository _bookRepository;
 
-        public CreateBookCommandValidator(IBookRepository bookRepository)
+        public UpdateBookCommandValidator(IBookRepository bookRepository)
         {
             _bookRepository = bookRepository;
 
@@ -23,10 +23,10 @@ namespace FloykLibrary.Application.Books.Commands.CreateBook
 
             RuleFor(b => b.Genre).NotEmpty();
 
-            RuleFor(b => b.AuthorsId).NotEmpty();
+            RuleFor(b => b.Authors).NotEmpty();
         }
 
-        private static bool CheckLength(CreateBookCommand command, string isbn)
+        private static bool CheckLength(UpdateBookCommand command, string isbn)
         {
             if (isbn.Length == 10 || isbn.Length == 13)
                 return true;
@@ -34,7 +34,7 @@ namespace FloykLibrary.Application.Books.Commands.CreateBook
             return false;
         }
 
-        private Task<bool> CheckIsbnAsync(CreateBookCommand command, string isbn, CancellationToken token)
+        private Task<bool> CheckIsbnAsync(UpdateBookCommand command, string isbn, CancellationToken token)
         {
             return _bookRepository.IsIsbnUniqueAsync(isbn, token);
         }

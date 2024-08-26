@@ -1,4 +1,5 @@
 ﻿using FloykLibrary.Domain.Entities;
+using FloykLibrary.Infrastructure.Data.EntityConfigurations;
 using Microsoft.EntityFrameworkCore;
 
 namespace FloykLibrary.Infrastructure
@@ -12,8 +13,14 @@ namespace FloykLibrary.Infrastructure
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options) 
         {
-            Database.EnsureDeleted();
+            //Database.EnsureDeleted();
             Database.EnsureCreated();
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfiguration(new BookEntityTypeConfigurator());
+            modelBuilder.ApplyConfiguration(new  AuthorEntityTypeConfigurator());
         }
     }
 }

@@ -2,15 +2,15 @@
 using FloykLibrary.Application.Shared.Models.DTOs;
 using MediatR;
 
-namespace FloykLibrary.Application.Books.Queries.GetBooksWithPagination
+namespace FloykLibrary.Application.Authors.Queries.GetAuthorsWithPagination
 {
-    public class GetBooksWithPaginationQuery : IRequest<PaginatedResult<BookDTO>>
+    public class GetAuthorsWithPaginationQuery : IRequest<PaginatedResult<AuthorDTO>>
     {
         public int PageSize { get; init; }
 
         public int PageNumber { get; init; }
 
-        public GetBooksWithPaginationQuery(int pageSize, int pageNumber)
+        public GetAuthorsWithPaginationQuery(int pageSize, int pageNumber)
         {
             PageSize = pageSize;
             PageNumber = pageNumber;

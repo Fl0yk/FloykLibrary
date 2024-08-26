@@ -23,6 +23,7 @@ namespace FloykLibrary.Application.Books.Queries.GetBooksWithPagination
             IQueryable<Book> query = await _bookRepository.GetAllAsync(null, token, b => b.Authors);
             
             int count = query.Count();
+
             List<Book> books = query
                 .OrderBy(b => b.Id)
                 .Skip((request.PageNumber - 1) * request.PageSize)

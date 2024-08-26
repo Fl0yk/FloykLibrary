@@ -5,13 +5,15 @@ using System.Linq.Expressions;
 
 namespace FloykLibrary.Infrastructure.Repositories
 {
-    internal class BookRepository : IBookRepository
+    public class BookRepository : IBookRepository
     {
-        private readonly DbSet<Book> _books; 
+        private readonly DbSet<Book> _books;
+        private readonly ApplicationDbContext _context;
 
         public BookRepository(ApplicationDbContext context)
-        {
+        { 
             _books = context.Books;
+            _context = context;
         }
 
         public Task AddImageAsync(Guid guidId, string image, CancellationToken token = default)
@@ -19,28 +21,37 @@ namespace FloykLibrary.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<Guid> CreateAsync(Book entity)
+        public Task<Guid> CreateAsync(Book entity, CancellationToken token = default)
         {
+            if (entity.Authors.Count > 0)
+            {
+                _context.Authors.AttachRange(entity.Authors);
+            }
+
             _books.Add(entity);
 
             return Task.FromResult(entity.Id);
         }
 
-        public Task DeleteAsync(Book entity)
+        public Task DeleteAsync(Book entity, CancellationToken token = default)
         {
             _books.Remove(entity);
 
             return Task.CompletedTask;
         }
 
-        public async Task<Book?> FirstOrDefaultAsync(Expression<Func<Book, bool>> filtres, CancellationToken token = default, params Expression<Func<Book, object>>[]? includesProperties)
+        public Task<Book?> FirstOrDefaultAsync(Expression<Func<Book, bool>> filtres, 
+                                                CancellationToken token = default, 
+                                                params Expression<Func<Book, object>>[]? includesProperties)
         {
-            return await _books.AsNoTracking().FirstOrDefaultAsync(filtres, token);
+            return _books.AsNoTracking().FirstOrDefaultAsync(filtres, token);
         }
 
-        public Task<IQueryable<Book>> GetAllAsync(Expression<Func<Book, bool>>? filtres, CancellationToken token = default, params Expression<Func<Book, object>>[]? includesProperties)
+        public Task<IQueryable<Book>> GetAllAsync(Expression<Func<Book, bool>>? filtres, 
+                                                    CancellationToken token = default, 
+                                                    params Expression<Func<Book, object>>[]? includesProperties)
         {
-            if (filtres is  null)
+            if (filtres is null)
                 return Task.FromResult(_books.AsNoTracking());
 
             return Task.FromResult(_books.AsNoTracking().Where(filtres));
@@ -51,8 +62,13 @@ namespace FloykLibrary.Infrastructure.Repositories
             return !await _books.AnyAsync(b => b.ISBN  == isbn, token);
         }
 
-        public Task<Guid> UpdateAsync(Book entity)
+        public Task<Guid> UpdateAsync(Book entity, CancellationToken token = default)
         {
+            if (entity.Authors.Count > 0)
+            {
+                _context.Authors.AttachRange(entity.Authors);
+            }
+
             _books.Update(entity);
 
             return Task.FromResult(entity.Id);

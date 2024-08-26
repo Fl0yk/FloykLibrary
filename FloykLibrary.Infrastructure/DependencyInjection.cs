@@ -16,7 +16,10 @@ namespace FloykLibrary.Infrastructure
 
             services.AddDbContext<ApplicationDbContext>(cfg => cfg.UseSqlServer(connectionString));
 
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
             services.AddScoped<IBookRepository, BookRepository>();
+            services.AddScoped<IAuthorRepository, AuthorRepository>();
 
             return services;
         }

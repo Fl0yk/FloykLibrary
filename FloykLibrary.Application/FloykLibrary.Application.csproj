@@ -14,11 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Authors\Commands\" />
-    <Folder Include="Authors\Queries\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\FloykLibrary.Domain\FloykLibrary.Domain.csproj" />
   </ItemGroup>
 
