@@ -78,6 +78,19 @@ namespace FloykLibrary.Presentation.Middlewares
                 context.Response.StatusCode = StatusCodes.Status404NotFound;
                 await context.Response.WriteAsJsonAsync(problemDetails);
             }
+            catch (InvalidTokenException exception)
+            {
+                var problemDetails = new ProblemDetails
+                {
+                    Status = StatusCodes.Status401Unauthorized,
+                    Type = "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.1",
+                    Title = "Invalid token",
+                    Detail = exception.Message
+                };
+
+                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                await context.Response.WriteAsJsonAsync(problemDetails);
+            }
             catch (Exception)
             {
                 //throw;

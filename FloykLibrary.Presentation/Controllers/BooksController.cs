@@ -8,6 +8,7 @@ using FloykLibrary.Application.Books.Queries.GetBookByISBN;
 using FloykLibrary.Application.Books.Queries.GetBooksWithPagination;
 using FloykLibrary.Application.Shared.Models.DTOs;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FloykLibrary.Presentation.Controllers
@@ -50,6 +51,7 @@ namespace FloykLibrary.Presentation.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> CreateBookAsync([FromBody] CreateBookCommand createBookCommand, CancellationToken token)
         {
             var id = await _mediator.Send(createBookCommand, token);
@@ -58,6 +60,7 @@ namespace FloykLibrary.Presentation.Controllers
         }
 
         [HttpPost("image/{id}")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> AddImageAsync([FromRoute] Guid id, IFormFile formFile, CancellationToken token)
         {
             await _mediator.Send(new AddImageCommand() 
@@ -71,6 +74,7 @@ namespace FloykLibrary.Presentation.Controllers
         }
 
         [HttpPost("take")]
+        [Authorize(Roles = "client")]
         public async Task<IActionResult> TakeBookAsync([FromBody] TakeBookCommand takeBookCommand, CancellationToken token)
         {
             await _mediator.Send(takeBookCommand, token);
@@ -79,6 +83,7 @@ namespace FloykLibrary.Presentation.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> UpdateBookAsync([FromBody] UpdateBookCommand updateBookCommand, CancellationToken token)
         {
             await _mediator.Send(updateBookCommand, token);
@@ -87,6 +92,7 @@ namespace FloykLibrary.Presentation.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> DeleteBookAsync([FromRoute] Guid id, CancellationToken token)
         {
             await _mediator.Send(new DeleteBookCommand() { Id = id }, token);
