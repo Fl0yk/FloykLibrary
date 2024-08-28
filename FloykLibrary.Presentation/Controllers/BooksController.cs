@@ -10,6 +10,7 @@ using FloykLibrary.Application.Shared.Models.DTOs;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace FloykLibrary.Presentation.Controllers
 {
@@ -26,10 +27,10 @@ namespace FloykLibrary.Presentation.Controllers
 
         [HttpGet]
         public async Task<IActionResult> GetBooksWithPaginationAsync([FromQuery] int pageNumber = 1, 
-                                                                [FromQuery] int pageSise = 3, 
+                                                                [FromQuery] int pageSize = 3, 
                                                                 CancellationToken token = default)
         {
-            var books = await _mediator.Send(new GetBooksWithPaginationQuery(pageSise, pageNumber), token);
+            var books = await _mediator.Send(new GetBooksWithPaginationQuery(pageSize, pageNumber), token);
 
             return Ok(books);
         }
@@ -51,7 +52,7 @@ namespace FloykLibrary.Presentation.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "client")]
         public async Task<IActionResult> CreateBookAsync([FromBody] CreateBookCommand createBookCommand, CancellationToken token)
         {
             var id = await _mediator.Send(createBookCommand, token);
@@ -73,11 +74,16 @@ namespace FloykLibrary.Presentation.Controllers
             return NoContent();
         }
 
-        [HttpPost("take")]
+        [HttpPost("take/{bookId:guid}/{returning:datetime}")]
         [Authorize(Roles = "client")]
-        public async Task<IActionResult> TakeBookAsync([FromBody] TakeBookCommand takeBookCommand, CancellationToken token)
+        public async Task<IActionResult> TakeBookAsync([FromRoute] Guid bookId, [FromRoute] DateTime returning, CancellationToken token)
         {
-            await _mediator.Send(takeBookCommand, token);
+            string? UserId = Request.HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+            if (UserId is null || !Guid.TryParse(UserId, out Guid guidId))
+                return Unauthorized();
+
+            await _mediator.Send(new TakeBookCommand() { UserId = guidId, BookId = bookId, ReturningBook = returning }, token);
 
             return NoContent();
         }

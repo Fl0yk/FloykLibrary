@@ -19,10 +19,7 @@ namespace FloykLibrary.Infrastructure.Repositories
 
         public override Task<Guid> UpdateAsync(User entity, CancellationToken token = default)
         {
-            if (entity.Roles.Any())
-            {
-                _context.Roles.AttachRange(entity.Roles);
-            }
+            _entities.Attach(entity);
 
             return base.UpdateAsync(entity, token);
         }

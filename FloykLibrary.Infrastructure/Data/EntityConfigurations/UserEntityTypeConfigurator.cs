@@ -20,9 +20,6 @@ namespace FloykLibrary.Infrastructure.Data.EntityConfigurations
                     .WithMany()
                     .UsingEntity<UserRole>(cnf => cnf.SeedUserRole());
 
-            builder.HasMany(x => x.TakenBooks)
-                    .WithMany();
-
             builder.SeedUsers();
         }
     }

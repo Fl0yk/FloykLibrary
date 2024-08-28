@@ -12,12 +12,16 @@
 
         public List<Author> Authors { get; set; } = [];
 
+        public Guid? UserId { get; set; }
+
+        public User? User { get; set; }
+
         public DateTime? TakingBook { get; set; }
 
         public DateTime? ReturningBook { get; set; }
 
         public string? Image { get; set; }
 
-        public bool IsTaken => TakingBook is not null;
+        public bool IsTaken => UserId is not null;
     }
 }

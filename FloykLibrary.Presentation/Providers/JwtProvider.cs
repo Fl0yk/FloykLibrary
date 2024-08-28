@@ -3,6 +3,7 @@ using FloykLibrary.Domain.Entities;
 using FloykLibrary.Presentation.Options.Models;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using NuGet.Packaging;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -21,11 +22,19 @@ namespace FloykLibrary.Presentation.Providers
 
         public string GenerateJwt(User user)
         {
-            var claims = new Claim[]
-        {
-            new(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new(ClaimTypes.Email, user.Email)
-        };
+            var claims = new List<Claim>
+            {
+                new(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new(ClaimTypes.Email, user.Email)
+            };
+
+            if (user.Roles.Count > 0)
+                claims.AddRange(
+                    user
+                    .Roles
+                    .Select(
+                        r => new Claim(ClaimTypes.Role, r.ToString()))
+                    );
 
             var signingCredentials = new SigningCredentials(
                 new SymmetricSecurityKey(

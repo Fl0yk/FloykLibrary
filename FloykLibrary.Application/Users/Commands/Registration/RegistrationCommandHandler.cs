@@ -30,6 +30,7 @@ namespace FloykLibrary.Application.Users.Commands.Registration
 
             user.Roles.Add(Role.Client);
             await _userRepository.CreateAsync(user, cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             string jwt = _jwtProvider.GenerateJwt(user);
             string refresh = _jwtProvider.GenerateRefreshToken();
@@ -38,7 +39,6 @@ namespace FloykLibrary.Application.Users.Commands.Registration
             user.RefreshTokenExpiry = DateTime.UtcNow.AddDays(1);
 
             await _userRepository.UpdateAsync(user, cancellationToken);
-
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return new() { JwtToken = jwt, RefreshToken = refresh };

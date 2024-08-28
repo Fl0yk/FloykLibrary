@@ -22,7 +22,7 @@ namespace FloykLibrary.Application.Users.Commands.Login
 
         public async Task<LoginCommandResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
-            User? dbUser = await _userRepository.FirstOrDefaultAsync(u => u.Name == request.Name && u.Email == request.Email, cancellationToken);
+            User? dbUser = await _userRepository.FirstOrDefaultAsync(u => u.Name == request.Name && u.Email == request.Email, cancellationToken, u => u.Roles);
 
             if (dbUser is null)
                 return new();

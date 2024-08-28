@@ -33,7 +33,7 @@ namespace FloykLibrary.Application.Users.Commands.RefreshToken
                 throw new InvalidTokenException("Invalid data in token");
             }
 
-            User? dbUser = await _userRepository.FirstOrDefaultAsync(u => u.Id == guidId, cancellationToken);
+            User? dbUser = await _userRepository.FirstOrDefaultAsync(u => u.Id == guidId, cancellationToken, u => u.Roles);
 
             if (dbUser is null)
                 throw new KeyNotFoundException("Invalid User from token");

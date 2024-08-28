@@ -14,6 +14,7 @@ namespace FloykLibrary.Application.Users.Commands.Registration
             RuleFor(u => u.Email)
                 .NotEmpty()
                 .MaximumLength(30)
+                .EmailAddress()
                 .MustAsync(CheckEmailAsync)
                 .WithMessage("Email should be unique");
 
