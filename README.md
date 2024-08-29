@@ -6,9 +6,9 @@
 <p>2. В консоли диспетчера пакетов (в Visual Studio Средства->Диспетчер пакетов NuGet->Консоль диспетчера пакетов) выбираете
 проект по умолчание "FloykLibrary.Infrastructure", а начальным проектом в решении "FloykLibrary.Presentation"</p>
 <p>3. Прописываете в консоли 
-```cmd
+<code>
 Update-Database
-```</p>
+</code></p>
 <p>4. Запускаете начальным проектом "FloykLibrary.Presentation"</p>
 
 <h3>Запуск через консоль</h3>
