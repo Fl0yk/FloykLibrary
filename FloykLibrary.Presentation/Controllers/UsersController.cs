@@ -6,6 +6,7 @@ using FloykLibrary.Application.Users.Commands.RefreshToken;
 using FloykLibrary.Application.Users.Commands.Registration;
 using FloykLibrary.Application.Users.Queries.GetUserById;
 using FloykLibrary.Application.Users.Queries.GetUsersWithPagination;
+using FloykLibrary.Presentation.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +25,7 @@ namespace FloykLibrary.Presentation.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "admin")]
+        [Authorize(Policy = PolicyTypes.AdminPolicy)]
         public async Task<IActionResult> GetUsersAsync([FromQuery] int pageNumber = 1,
                                                                 [FromQuery] int pageSize = 3,
                                                                 CancellationToken token = default)

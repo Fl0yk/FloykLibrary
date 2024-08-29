@@ -4,7 +4,7 @@ using FloykLibrary.Application.Authors.Commands.UpdateAuthor;
 using FloykLibrary.Application.Authors.Queries.GetAuthorById;
 using FloykLibrary.Application.Authors.Queries.GetAuthorsWithPagination;
 using FloykLibrary.Application.Shared.Models.DTOs;
-using FloykLibrary.Domain.Entities;
+using FloykLibrary.Presentation.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -32,7 +32,7 @@ namespace FloykLibrary.Presentation.Controllers
             return Ok(authors);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetAuthorByIdAsync([FromRoute] Guid id, CancellationToken token)
         {
             AuthorDTO author = await _mediator.Send(new GetAuthorByIdQuery() { Id = id }, token);
@@ -41,7 +41,7 @@ namespace FloykLibrary.Presentation.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "admin")]
+        [Authorize(Policy = PolicyTypes.AdminPolicy)]
         public async Task<IActionResult> Post([FromBody] CreateAuthorCommand createAuthorCommand, CancellationToken token)
         {
             var id = await _mediator.Send(createAuthorCommand, token);
@@ -50,7 +50,7 @@ namespace FloykLibrary.Presentation.Controllers
         }
 
         [HttpPut]
-        [Authorize(Roles = "admin")]
+        [Authorize(Policy = PolicyTypes.AdminPolicy)]
         public async Task<IActionResult> UpdateAuthorAsync([FromBody] UpdateAuthorCommand updateAuthorCommand, CancellationToken token)
         {
             await _mediator.Send(updateAuthorCommand, token);
@@ -58,8 +58,8 @@ namespace FloykLibrary.Presentation.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
-        [Authorize(Roles = "admin")]
+        [HttpDelete("{id:guid}")]
+        [Authorize(Policy = PolicyTypes.AdminPolicy)]
         public async Task<IActionResult> DeleteAuthorAsync([FromRoute] Guid id, CancellationToken token)
         {
             await _mediator.Send(new DeleteAuthorCommand() { Id = id }, token);

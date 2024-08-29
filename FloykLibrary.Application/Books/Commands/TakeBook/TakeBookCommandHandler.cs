@@ -28,7 +28,7 @@ namespace FloykLibrary.Application.Books.Commands.TakeBook
                 throw new KeyNotFoundException($"Book with id {request.BookId} not found");
 
             if (dbBook.IsTaken)
-                throw new BookIsTakenException();
+                throw new InvalidOperationException("Book is taken");
 
             User? dbUser = await _userRepository.FirstOrDefaultAsync(u => u.Id == request.UserId, token, u => u.TakenBooks);
 

@@ -1,4 +1,6 @@
 ﻿using FloykLibrary.Application.Shared.Abstractions;
+using FloykLibrary.Domain.Entities;
+using FloykLibrary.Presentation.Constants;
 using FloykLibrary.Presentation.Options.Models;
 using FloykLibrary.Presentation.Options.Setups;
 using FloykLibrary.Presentation.Providers;
@@ -97,6 +99,21 @@ namespace FloykLibrary.Presentation
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.SecretKey)),
 
                 };
+            });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(PolicyTypes.AdminPolicy, policy =>
+                {
+                    policy.RequireAuthenticatedUser();
+                    policy.RequireRole(Role.Admin.ToString());
+                });
+
+                options.AddPolicy(PolicyTypes.ClientPolicy, policy =>
+                {
+                    policy.RequireAuthenticatedUser();
+                    policy.RequireRole(Role.Client.ToString());
+                });
             });
         }
     }

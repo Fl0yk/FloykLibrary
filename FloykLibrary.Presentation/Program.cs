@@ -27,6 +27,8 @@ app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseAuthorization();
 
+app.UseAuthorization();
+
 app.MapControllers();
 
 app.Run();
