@@ -5,11 +5,13 @@ VisualStudioVersion = 17.11.35219.272
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FloykLibrary.Domain", "FloykLibrary.Domain\FloykLibrary.Domain.csproj", "{C5FBE489-B0F6-4A75-A721-97F0AE62F344}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FloykLibrary.Application", "FloykLibrary.Application\FloykLibrary.Application.csproj", "{A875095C-B77B-4CE4-B707-CF1374FB8F38}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FloykLibrary.Application", "FloykLibrary.Application\FloykLibrary.Application.csproj", "{A875095C-B77B-4CE4-B707-CF1374FB8F38}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FloykLibrary.Infrastructure", "FloykLibrary.Infrastructure\FloykLibrary.Infrastructure.csproj", "{7A8717B3-A316-445E-8DDB-4196084966F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FloykLibrary.Infrastructure", "FloykLibrary.Infrastructure\FloykLibrary.Infrastructure.csproj", "{7A8717B3-A316-445E-8DDB-4196084966F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FloykLibrary.Presentation", "FloykLibrary.Presentation\FloykLibrary.Presentation.csproj", "{86C3F5EF-CD1A-4B42-B91F-0464ADDA54D7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FloykLibrary.Presentation", "FloykLibrary.Presentation\FloykLibrary.Presentation.csproj", "{86C3F5EF-CD1A-4B42-B91F-0464ADDA54D7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FloykLibrary.Tests", "FloykLibrary.Tests\FloykLibrary.Tests.csproj", "{5B613258-2100-4249-9609-366A44296012}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{86C3F5EF-CD1A-4B42-B91F-0464ADDA54D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86C3F5EF-CD1A-4B42-B91F-0464ADDA54D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{86C3F5EF-CD1A-4B42-B91F-0464ADDA54D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B613258-2100-4249-9609-366A44296012}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B613258-2100-4249-9609-366A44296012}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B613258-2100-4249-9609-366A44296012}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B613258-2100-4249-9609-366A44296012}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

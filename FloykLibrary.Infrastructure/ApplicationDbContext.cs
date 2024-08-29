@@ -14,7 +14,7 @@ namespace FloykLibrary.Infrastructure
 
         public DbSet<Role> Roles => Set<Role>();
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public ApplicationDbContext(DbContextOptions options)
         : base(options) 
         {
             //Database.EnsureDeleted();
