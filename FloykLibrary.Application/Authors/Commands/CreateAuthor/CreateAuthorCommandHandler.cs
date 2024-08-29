@@ -24,10 +24,10 @@ namespace FloykLibrary.Application.Authors.Commands.CreateAuthor
         {
             Author author = _mapper.Map<Author>(request);
 
-            await _authorRepository.CreateAsync(author, token);
+            Guid id = await _authorRepository.CreateAsync(author, token);
             await _unitOfWork.SaveChangesAsync(token);
 
-            return author.Id;
+            return id;
         }
     }
 }
