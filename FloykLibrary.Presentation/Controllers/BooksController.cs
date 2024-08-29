@@ -7,8 +7,11 @@ using FloykLibrary.Application.Books.Queries.GetBookById;
 using FloykLibrary.Application.Books.Queries.GetBookByISBN;
 using FloykLibrary.Application.Books.Queries.GetBooksWithPagination;
 using FloykLibrary.Application.Shared.Models.DTOs;
+using FloykLibrary.Presentation.Constants;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace FloykLibrary.Presentation.Controllers
 {
@@ -25,15 +28,15 @@ namespace FloykLibrary.Presentation.Controllers
 
         [HttpGet]
         public async Task<IActionResult> GetBooksWithPaginationAsync([FromQuery] int pageNumber = 1, 
-                                                                [FromQuery] int pageSise = 3, 
+                                                                [FromQuery] int pageSize = 3, 
                                                                 CancellationToken token = default)
         {
-            var books = await _mediator.Send(new GetBooksWithPaginationQuery(pageSise, pageNumber), token);
+            var books = await _mediator.Send(new GetBooksWithPaginationQuery(pageSize, pageNumber), token);
 
             return Ok(books);
         }
 
-        [HttpGet("id/{id}")]
+        [HttpGet("id/{id:guid}")]
         public async Task<IActionResult> GetBookByIdAsync([FromRoute] Guid id, CancellationToken token)
         {
             BookDTO book = await _mediator.Send(new GetBookByIdQuery() { Id = id}, token);
@@ -50,6 +53,7 @@ namespace FloykLibrary.Presentation.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = PolicyTypes.AdminPolicy)]
         public async Task<IActionResult> CreateBookAsync([FromBody] CreateBookCommand createBookCommand, CancellationToken token)
         {
             var id = await _mediator.Send(createBookCommand, token);
@@ -57,7 +61,8 @@ namespace FloykLibrary.Presentation.Controllers
             return Ok(id);
         }
 
-        [HttpPost("image/{id}")]
+        [HttpPost("image/{id:guid}")]
+        [Authorize(Policy = PolicyTypes.AdminPolicy)]
         public async Task<IActionResult> AddImageAsync([FromRoute] Guid id, IFormFile formFile, CancellationToken token)
         {
             await _mediator.Send(new AddImageCommand() 
@@ -70,15 +75,22 @@ namespace FloykLibrary.Presentation.Controllers
             return NoContent();
         }
 
-        [HttpPost("take")]
-        public async Task<IActionResult> TakeBookAsync([FromBody] TakeBookCommand takeBookCommand, CancellationToken token)
+        [HttpPost("take/{bookId:guid}/{returning:datetime}")]
+        [Authorize(Policy = PolicyTypes.ClientPolicy)]
+        public async Task<IActionResult> TakeBookAsync([FromRoute] Guid bookId, [FromRoute] DateTime returning, CancellationToken token)
         {
-            await _mediator.Send(takeBookCommand, token);
+            string? UserId = Request.HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+            if (UserId is null || !Guid.TryParse(UserId, out Guid guidId))
+                return Unauthorized();
+
+            await _mediator.Send(new TakeBookCommand() { UserId = guidId, BookId = bookId, ReturningBook = returning }, token);
 
             return NoContent();
         }
 
         [HttpPut]
+        [Authorize(Policy = PolicyTypes.AdminPolicy)]
         public async Task<IActionResult> UpdateBookAsync([FromBody] UpdateBookCommand updateBookCommand, CancellationToken token)
         {
             await _mediator.Send(updateBookCommand, token);
@@ -86,7 +98,8 @@ namespace FloykLibrary.Presentation.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:guid}")]
+        [Authorize(Policy = PolicyTypes.AdminPolicy)]
         public async Task<IActionResult> DeleteBookAsync([FromRoute] Guid id, CancellationToken token)
         {
             await _mediator.Send(new DeleteBookCommand() { Id = id }, token);

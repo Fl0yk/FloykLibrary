@@ -22,6 +22,12 @@ namespace FloykLibrary.Infrastructure.Data.EntityConfigurations
                 .WithMany(a => a.Books)
                 .UsingEntity<AuthorBook>(ab => ab.SeedAuthorBook());
 
+            bookConfigBuilder
+                .HasOne(b => b.User)
+                .WithMany(a => a.TakenBooks)
+                .HasForeignKey(b => b.UserId)
+                .OnDelete(DeleteBehavior.SetNull);
+
             bookConfigBuilder.SeedBooks();
         }
     }

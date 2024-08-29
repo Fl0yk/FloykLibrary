@@ -6,7 +6,9 @@ namespace FloykLibrary.Application.Books.Commands.TakeBook
     {
         public TakeBookCommandValidator() 
         {
-            RuleFor(b => b.Id).NotEmpty();
+            RuleFor(b => b.BookId).NotEmpty();
+
+            RuleFor(b => b.UserId).NotEmpty();
 
             RuleFor(b => b.ReturningBook.Date)
                 .NotEmpty()

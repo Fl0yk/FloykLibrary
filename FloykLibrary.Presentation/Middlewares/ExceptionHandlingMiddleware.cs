@@ -65,17 +65,17 @@ namespace FloykLibrary.Presentation.Middlewares
                 context.Response.StatusCode = StatusCodes.Status404NotFound;
                 await context.Response.WriteAsJsonAsync(problemDetails);
             }
-            catch (BookIsTakenException exception)
+            catch (InvalidTokenException exception)
             {
                 var problemDetails = new ProblemDetails
                 {
-                    Status = StatusCodes.Status400BadRequest,
+                    Status = StatusCodes.Status401Unauthorized,
                     Type = "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.1",
-                    Title = "Book is not taken",
+                    Title = "Invalid token",
                     Detail = exception.Message
                 };
 
-                context.Response.StatusCode = StatusCodes.Status404NotFound;
+                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                 await context.Response.WriteAsJsonAsync(problemDetails);
             }
             catch (Exception)

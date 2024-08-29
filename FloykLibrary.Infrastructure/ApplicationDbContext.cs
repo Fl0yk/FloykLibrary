@@ -10,17 +10,23 @@ namespace FloykLibrary.Infrastructure
 
         public DbSet<Author> Authors => Set<Author>();
 
+        public DbSet<User> Users => Set<User>();
+
+        public DbSet<Role> Roles => Set<Role>();
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options) 
         {
             //Database.EnsureDeleted();
-            Database.EnsureCreated();
+            //Database.EnsureCreated();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new AuthorEntityTypeConfigurator());
             modelBuilder.ApplyConfiguration(new BookEntityTypeConfigurator());
+            modelBuilder.ApplyConfiguration(new RoleEntityTypeConfigurator());
+            modelBuilder.ApplyConfiguration(new UserEntityTypeConfigurator());
 
             base.OnModelCreating(modelBuilder);
         }
