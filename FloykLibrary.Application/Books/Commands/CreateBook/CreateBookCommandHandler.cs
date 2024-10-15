@@ -12,19 +12,24 @@ namespace FloykLibrary.Application.Books.Commands.CreateBook
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public CreateBookCommandHandler(IBookRepository bookRepository, 
-                                        IAuthorRepository authorRepository, 
-                                        IUnitOfWork unitOfWork,
+        public CreateBookCommandHandler(IUnitOfWork unitOfWork,
                                         IMapper mapper)
         {
-            _bookRepository = bookRepository;
-            _authorRepository = authorRepository;
+            _bookRepository = unitOfWork.BookRepository;
+            _authorRepository = unitOfWork.AuthorRepository;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
         public async Task<Guid> Handle(CreateBookCommand request, CancellationToken token)
         {
+            Book? dbBook = await _bookRepository.FirstOrDefaultAsync(b => b.ISBN == request.ISBN);
+
+            if (dbBook is null)
+            {
+                throw new InvalidOperationException($"Book with ISBN {request.ISBN} is exist");
+            }
+
             Book book = _mapper.Map<Book>(request);
 
             List<Author> authors = (await _authorRepository

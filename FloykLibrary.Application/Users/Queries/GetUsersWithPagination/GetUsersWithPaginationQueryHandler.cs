@@ -12,9 +12,9 @@ namespace FloykLibrary.Application.Users.Queries.GetUsersWithPagination
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
 
-        public GetUsersWithPaginationQueryHandler(IUserRepository userRepository, IMapper mapper)
+        public GetUsersWithPaginationQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _userRepository = userRepository;
+            _userRepository = unitOfWork.UserRepository;
             _mapper = mapper;
         }
 

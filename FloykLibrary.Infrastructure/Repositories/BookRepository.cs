@@ -1,5 +1,6 @@
 ﻿using FloykLibrary.Domain.Abstractions;
 using FloykLibrary.Domain.Entities;
+using FloykLibrary.Infrastructure.Specifications;
 using Microsoft.EntityFrameworkCore;
 
 namespace FloykLibrary.Infrastructure.Repositories
@@ -20,6 +21,21 @@ namespace FloykLibrary.Infrastructure.Repositories
             return Task.FromResult(entity.Id);
         }
 
+        public async Task<Book?> GetBookByIdWithAuthors(Guid bookId,
+            CancellationToken token = default) => 
+            await ApplySpecification(
+                new GetBookByIdWithAuthorsSpecification(bookId))
+            .FirstOrDefaultAsync(token);
+
+        public Task<IQueryable<Book>> GetFiltredBooks(string? namePart,
+            string? descriptionPart,
+            CancellationToken token = default) => Task.FromResult(
+                ApplySpecification([
+                new GetBooksByNameContainsSpecification(namePart),
+                new GetBooksByDescriptionContainsSpecification(descriptionPart)
+            ]));
+           
+
         public async Task<bool> IsIsbnUniqueAsync(string isbn, CancellationToken token = default)
         {
             return !await _entities.AnyAsync(b => b.ISBN  == isbn, token);
@@ -35,6 +51,23 @@ namespace FloykLibrary.Infrastructure.Repositories
             _entities.Update(entity);
 
             return Task.FromResult(entity.Id);
+        }
+
+        private IQueryable<Book> ApplySpecification(Specification<Book> specification)
+        {
+            return SpecificationEvaluator.GetQuery(_entities, specification);
+        }
+
+        private IQueryable<Book> ApplySpecification(IEnumerable<Specification<Book>> specifications)
+        {
+            IQueryable<Book> query = _entities;
+
+            foreach (var  specification in specifications)
+            {
+                query = SpecificationEvaluator.GetQuery(query, specification);
+            }
+
+            return query;
         }
     }
 }

@@ -13,9 +13,9 @@ namespace FloykLibrary.Application.Authors.Queries.GetAuthorsWithPagination
         private readonly IAuthorRepository _authorRepository;
         private readonly IMapper _mapper;
 
-        public GetAuthorsWithPaginationQueryHandler(IAuthorRepository authorRepository, IMapper mapper)
+        public GetAuthorsWithPaginationQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _authorRepository = authorRepository;
+            _authorRepository = unitOfWork.AuthorRepository;
             _mapper = mapper;
         }
 

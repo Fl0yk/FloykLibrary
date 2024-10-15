@@ -11,9 +11,9 @@ namespace FloykLibrary.Application.Books.Queries.GetBookById
         private readonly IBookRepository _bookRepository;
         private readonly IMapper _mapper;
 
-        public GetBookByIdQueryHandler(IBookRepository bookRepository, IMapper mapper)
+        public GetBookByIdQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _bookRepository = bookRepository;
+            _bookRepository = unitOfWork.BookRepository;
             _mapper = mapper;
         }
 

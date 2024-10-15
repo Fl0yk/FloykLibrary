@@ -12,9 +12,9 @@ namespace FloykLibrary.Application.Books.Queries.GetBooksWithPagination
         private readonly IBookRepository _bookRepository;
         private readonly IMapper _mapper;
 
-        public GetBooksWithPaginationQueryHandler(IBookRepository bookRepository, IMapper mapper)
+        public GetBooksWithPaginationQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _bookRepository = bookRepository;
+            _bookRepository = unitOfWork.BookRepository;
             _mapper = mapper;
         }
 

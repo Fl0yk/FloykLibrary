@@ -11,11 +11,10 @@ namespace FloykLibrary.Application.Authors.Commands.UpdateAuthor
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public UpdateAuthorCommandHandler(IAuthorRepository authorRepository, 
-                                            IUnitOfWork unitOfWork, 
+        public UpdateAuthorCommandHandler(IUnitOfWork unitOfWork, 
                                             IMapper mapper)
         {
-            _authorRepository = authorRepository;
+            _authorRepository = unitOfWork.AuthorRepository;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }

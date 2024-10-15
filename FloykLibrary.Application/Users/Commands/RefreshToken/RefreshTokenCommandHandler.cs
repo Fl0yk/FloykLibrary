@@ -7,18 +7,18 @@ using System.Security.Claims;
 
 namespace FloykLibrary.Application.Users.Commands.RefreshToken
 {
-    public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, RefreshTokenCommandResponse>
+    public class RefreshTokenCommandHandler 
+        : IRequestHandler<RefreshTokenCommand, RefreshTokenCommandResponse>
     {
         private readonly IUserRepository _userRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IJwtProvider _jwtProvider;
 
-        public RefreshTokenCommandHandler(IJwtProvider jwtProvider, 
-                                            IUserRepository userRepository, 
-                                            IUnitOfWork unitOfWork)
+        public RefreshTokenCommandHandler(IUnitOfWork unitOfWork, 
+                                            IJwtProvider jwtProvider)
         {
             _jwtProvider = jwtProvider;
-            _userRepository = userRepository;
+            _userRepository = unitOfWork.UserRepository;
             _unitOfWork = unitOfWork;
         }
 

@@ -11,11 +11,10 @@ namespace FloykLibrary.Application.Users.Commands.Login
         private readonly IUnitOfWork _unitOfWork;
         private readonly IJwtProvider _jwtProvider;
 
-        public LoginCommandHandler(IUserRepository userRepository, 
-                                    IUnitOfWork unitOfWork, 
+        public LoginCommandHandler(IUnitOfWork unitOfWork, 
                                     IJwtProvider jwtProvider)
         {
-            _userRepository = userRepository;
+            _userRepository = unitOfWork.UserRepository;
             _unitOfWork = unitOfWork;
             _jwtProvider = jwtProvider;
         }

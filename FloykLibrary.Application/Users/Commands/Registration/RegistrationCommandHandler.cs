@@ -13,12 +13,11 @@ namespace FloykLibrary.Application.Users.Commands.Registration
         private readonly IJwtProvider _jwtProvider;
         private readonly IMapper _mapper;
 
-        public RegistrationCommandHandler(IUserRepository userRepository, 
-                                            IUnitOfWork unitOfWork, 
+        public RegistrationCommandHandler(IUnitOfWork unitOfWork, 
                                             IJwtProvider jwtProvider,
                                             IMapper mapper)
         {
-            _userRepository = userRepository;
+            _userRepository = unitOfWork.UserRepository;
             _unitOfWork = unitOfWork;
             _jwtProvider = jwtProvider;
             _mapper = mapper;

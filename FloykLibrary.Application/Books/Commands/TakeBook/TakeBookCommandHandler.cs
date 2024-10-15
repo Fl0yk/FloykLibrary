@@ -11,13 +11,11 @@ namespace FloykLibrary.Application.Books.Commands.TakeBook
         private readonly IUserRepository _userRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public TakeBookCommandHandler(IBookRepository bookRepository, 
-                                        IUserRepository userRepository, 
-                                        IUnitOfWork unitOfWork)
+        public TakeBookCommandHandler(IUnitOfWork unitOfWork)
         {
-            _bookRepository = bookRepository;
             _unitOfWork = unitOfWork;
-            _userRepository = userRepository;
+            _bookRepository = unitOfWork.BookRepository;
+            _userRepository = unitOfWork.UserRepository;
         }
 
         public async Task Handle(TakeBookCommand request, CancellationToken token)

@@ -11,12 +11,11 @@ namespace FloykLibrary.Application.Books.Commands.AddImage
         private readonly IUnitOfWork _unitOfWork;
         private readonly IImageService _imageService;
 
-        public AddImageCommandHandler(IBookRepository bookRepository, 
-                                        IUnitOfWork unitOfWork, 
+        public AddImageCommandHandler(IUnitOfWork unitOfWork, 
                                         IImageService imageService)
         {
-            _bookRepository = bookRepository;
             _unitOfWork = unitOfWork;
+            _bookRepository = unitOfWork.BookRepository;
             _imageService = imageService;
         }
 

@@ -9,9 +9,9 @@ namespace FloykLibrary.Application.Books.Commands.DeleteBook
         private readonly IBookRepository _bookRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public DeleteBookCommandHandler(IBookRepository bookRepository, IUnitOfWork unitOfWork)
+        public DeleteBookCommandHandler(IUnitOfWork unitOfWork)
         {
-            _bookRepository = bookRepository;
+            _bookRepository = unitOfWork.BookRepository;
             _unitOfWork = unitOfWork;
         }
 

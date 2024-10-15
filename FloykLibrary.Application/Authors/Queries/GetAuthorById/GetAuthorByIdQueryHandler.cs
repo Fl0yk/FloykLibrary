@@ -11,9 +11,9 @@ namespace FloykLibrary.Application.Authors.Queries.GetAuthorById
         private readonly IAuthorRepository _authorRepository;
         private readonly IMapper _mapper;
 
-        public GetAuthorByIdQueryHandler(IAuthorRepository authorRepository, IMapper mapper)
+        public GetAuthorByIdQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _authorRepository = authorRepository;
+            _authorRepository = unitOfWork.AuthorRepository;
             _mapper = mapper;
         }
 

@@ -9,9 +9,9 @@ namespace FloykLibrary.Application.Authors.Commands.DeleteAuthor
         private readonly IAuthorRepository _authorRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public DeleteAuthorCommandHandler(IAuthorRepository authorRepository, IUnitOfWork unitOfWork)
+        public DeleteAuthorCommandHandler(IUnitOfWork unitOfWork)
         {
-            _authorRepository = authorRepository;
+            _authorRepository = unitOfWork.AuthorRepository;
             _unitOfWork = unitOfWork;
         }
 

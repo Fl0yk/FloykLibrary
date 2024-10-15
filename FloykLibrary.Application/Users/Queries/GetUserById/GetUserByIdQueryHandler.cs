@@ -11,9 +11,9 @@ namespace FloykLibrary.Application.Users.Queries.GetUserById
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
 
-        public GetUserByIdQueryHandler(IUserRepository userRepository, IMapper mapper)
+        public GetUserByIdQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _userRepository = userRepository;
+            _userRepository = unitOfWork.UserRepository;
             _mapper = mapper;
         }
 
